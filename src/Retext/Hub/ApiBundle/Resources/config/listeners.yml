@@ -1,0 +1,11 @@
+parameters:
+  hub.api.listener.view_request.class: Retext\Hub\ApiBundle\Listener\ViewRequestListener
+
+services:
+  hub.api.listener.view_request:
+    class: %dothiv.api.listener.view_request.class%
+    arguments:
+      - @annotation_reader
+      - @validator
+    tags:
+      - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

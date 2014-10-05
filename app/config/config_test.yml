@@ -1,0 +1,36 @@
+imports:
+    - { resource: config_dev.yml }
+    - { resource: parameters_test.yml }
+
+framework:
+    router:   { resource: "%kernel.root_dir%/config/routing_test.yml" }
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    profiler:
+        enabled: false
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+swiftmailer:
+    disable_delivery: true
+
+doctrine:
+    orm:
+        auto_generate_proxy_classes: true
+        auto_mapping: true
+    dbal:
+        driver:   pdo_sqlite
+        host:     ~
+        port:     ~
+        dbname:   ~
+        user:     ~
+        password: ~
+        path:     "%kernel.root_dir%/cache/test/test.db"
+        charset:  UTF8
+
+stof_doctrine_extensions:
+    class:
+        timestampable: Retext\Hub\BackendBundle\Tests\Extra\TimestampableListener

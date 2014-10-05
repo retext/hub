@@ -1,0 +1,20 @@
+parameters:
+    hub.service.clock.class: Dothiv\ValueObject\ClockValue
+    hub.service.user.class: Retext\Hub\BackendBundle\Service\UserService
+
+services:
+
+    hub.service.clock:
+        class: %hub.service.clock.class%
+        arguments:
+        - %hub_backend.clock_expr%
+
+    clock: "@hub.service.clock"
+
+    hub.service.user:
+        class: %hub.service.user.class%
+        arguments:
+        - @hub.repo.user
+        - @hub.repo.user_token
+        - @hub.repo.user_login_link_request
+        - @clock

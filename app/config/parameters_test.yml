@@ -1,0 +1,22 @@
+# This file is auto-generated during the composer install
+parameters:
+    locale: en
+    hostname: hub.retext.it.dev
+    secret: changeme
+    assets_version: 1
+    database_driver: pdo_pgsql
+    database_host: 127.0.0.1
+    database_port: ~
+    database_name: hub_test
+    database_user: hub_test
+    database_password: test
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: ~
+    mailer_password: ~
+    mailer_port: ~
+    mailer_encryption: ~
+    mailer_auth_mode: ~
+    node_bin: /usr/bin/node
+    node_modules: '%kernel.root_dir%/../node_modules'
+    database_path: ~

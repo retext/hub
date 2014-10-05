@@ -1,0 +1,33 @@
+parameters:
+    hub.repo.user.entity.class: 'RetextHubBackendBundle:User'
+    hub.repo.user.class: Retext\Hub\BackendBundle\Repository\UserRepository
+    hub.repo.user_login_link_request.entity.class: 'RetextHubBackendBundle:UserLoginLinkRequest'
+    hub.repo.user_login_link_request.class: Retext\Hub\BackendBundle\Repository\UserLoginLinkRequest
+    hub.repo.user_token.entity.class: 'RetextHubBackendBundle:UserToken'
+    hub.repo.user_token.class: Retext\Hub\BackendBundle\Repository\UserTokenRepository
+
+services:
+
+    hub.repo.user:
+        class: %hub.repo.user.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [ %hub.repo.user.entity.class% ]
+        calls:
+        - [setValidator, ["@validator"]]
+
+    hub.repo.user_login_link_request:
+        class: %hub.repo.user_login_link_request.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [ %hub.repo.user_login_link_request.entity.class% ]
+        calls:
+        - [setValidator, ["@validator"]]
+
+    hub.repo.user_token:
+        class: %hub.repo.user_token.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [ %hub.repo.user_token.entity.class% ]
+        calls:
+        - [setValidator, ["@validator"]]

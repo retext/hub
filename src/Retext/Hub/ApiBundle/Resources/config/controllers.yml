@@ -1,0 +1,9 @@
+parameters:
+    hub.api.controller.login.class: Retext\Hub\ApiBundle\Controller\LoginController
+
+services:
+    hub.api.controller.login:
+        class: %hub.api.controller.login.class%
+        arguments:
+        - @hub.service.user
+        - @serializer

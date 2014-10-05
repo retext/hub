@@ -1,0 +1,6 @@
+hub_api_login:
+    path:     /auth/login
+    defaults:
+        _controller: hub.api.controller.login:loginAction
+        _format: json
+    methods: [POST]

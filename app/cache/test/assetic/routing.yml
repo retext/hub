@@ -1,0 +1,5 @@
+_assetic:
+    resource: .
+    type: assetic
+_app:
+    resource: /home/m/www/hub.retext.it/app/config/routing_test.yml
