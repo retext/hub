@@ -1,0 +1,38 @@
+language: php
+
+php:
+  - hhvm
+  - 5.6
+  - 5.5
+  - 5.4
+
+before_install:
+  - sudo apt-get update
+
+install:
+# install nodejs
+  - sudo apt-get install python-software-properties python g++ make software-properties-common
+  - sudo add-apt-repository -y ppa:chris-lea/node.js
+  - sudo apt-get update
+  - sudo apt-get install nodejs
+
+before_script:
+# configure php
+  - echo 'date.timezone = "Europe/Berlin"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+# install node modules
+  - npm install
+# install
+  - cp app/config/parameters.yml.travis app/config/parameters.yml  
+  - cp app/config/parameters.yml.travis app/config/parameters_test.yml
+  - composer install
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - php app/console doctrine:schema:create
+  - sudo chown -R www-data app/cache app/logs
+  - sudo chmod -R 777 app/cache app/logs
+
+script:
+  - phpunit -c app/
+
+after_failure:
+  - cd /home/travis/build/retext/hub/
+  - sudo cat app/logs/test.log | grep CRITICAL
