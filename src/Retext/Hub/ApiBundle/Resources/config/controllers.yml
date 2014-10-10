@@ -5,5 +5,5 @@ services:
     hub.api.controller.login:
         class: %hub.api.controller.login.class%
         arguments:
-        - @hub.service.user
+        - @hub.user
         - @serializer

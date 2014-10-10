@@ -17,7 +17,7 @@ trait ProcessedTimeTrait
     /**
      * @param \DateTime $processed
      */
-    public function setProcessed(\DateTime $processed)
+    public function process(\DateTime $processed)
     {
         $this->processed = $processed;
     }

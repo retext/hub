@@ -1,0 +1,10 @@
+parameters:
+    hub.frontend.login_link_factory.class: Retext\Hub\FrontendBundle\Service\LoginLinkFactory
+
+services:
+    hub.frontend.login_link_factory:
+        class: %hub.frontend.login_link_factory.class%
+        arguments:
+        - hub_frontend_login
+        - @router
+        - %hostname%

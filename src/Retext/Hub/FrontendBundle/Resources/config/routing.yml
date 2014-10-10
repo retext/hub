@@ -1,0 +1,3 @@
+hub_frontend_login:
+    path: /auth/{user}/{token}
+    methods: [GET]

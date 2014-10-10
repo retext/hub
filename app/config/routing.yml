@@ -1,3 +1,7 @@
+retext_hub_frontend:
+    resource: "@RetextHubFrontendBundle/Resources/config/routing.yml"
+    prefix:   /
+
 retext_hub_api:
     resource: "@RetextHubApiBundle/Resources/config/routing.yml"
     prefix:   /api/

@@ -4,6 +4,7 @@ namespace Retext\Hub\BackendBundle\Service;
 
 use Dothiv\ValueObject\EmailValue;
 use Dothiv\ValueObject\ClockValue;
+use Dothiv\ValueObject\IdentValue;
 use Retext\Hub\BackendBundle\Entity\User;
 use Retext\Hub\BackendBundle\Entity\UserLoginLinkRequest;
 use Retext\Hub\BackendBundle\Entity\UserToken;
@@ -14,6 +15,8 @@ use Retext\Hub\BackendBundle\Repository\UserTokenRepositoryInterface;
 
 class UserService implements UserServiceInterface
 {
+    use Traits\TokenGeneratorTrait;
+
     /**
      * @var UserRepositoryInterface
      */
@@ -58,6 +61,7 @@ class UserService implements UserServiceInterface
         }
         $user = new User();
         $user->setEmail($email);
+        $user->setHandle(new IdentValue($this->generateToken()));
         $this->userRepo->persist($user)->flush();
         return $user;
     }
@@ -65,7 +69,7 @@ class UserService implements UserServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function sendLoginLink(User $user)
+    public function createLoginLinkRequest(User $user)
     {
         $limitTime = $this->clock->getNow()->modify(sprintf('-%d seconds', $this->loginTokenWait));
         if ($this->userTokenRepo->hasTokens($user, UserToken::SCOPE_LOGIN, $limitTime)) {

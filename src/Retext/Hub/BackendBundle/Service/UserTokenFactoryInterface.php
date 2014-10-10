@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: m
- * Date: 05.10.14
- * Time: 15:01
- */
 
 namespace Retext\Hub\BackendBundle\Service;
 

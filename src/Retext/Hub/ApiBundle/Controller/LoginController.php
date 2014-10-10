@@ -49,7 +49,7 @@ class LoginController
         $model = $request->attributes->get('model');
         $user  = $this->userService->getOrCreateUserByEmail($model->getEmail());
         try {
-            $this->userService->sendLoginLink($user);
+            $this->userService->createLoginLinkRequest($user);
         } catch (RateLimitExceededException $e) {
             throw new TooManyRequestsHttpException();
         }

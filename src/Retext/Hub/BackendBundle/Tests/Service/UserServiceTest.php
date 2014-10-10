@@ -76,7 +76,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
      * @group   Service
      * @depends itShouldBeInstantiateable
      */
-    public function itShouldSendALoginToken()
+    public function itShouldCreateALoginLink()
     {
         // Set up data
         $user = new User();
@@ -97,7 +97,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
         $this->mockUserLoginLinkRequestRepo->expects($this->once())->method('flush');
 
         // Execute
-        $this->createTestObject()->sendLoginLink($user);
+        $this->createTestObject()->createLoginLinkRequest($user);
     }
 
     /**

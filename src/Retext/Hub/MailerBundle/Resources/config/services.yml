@@ -1,0 +1,11 @@
+parameters:
+    retext_hub_mailer.mailer.class: Retext\Hub\MailerBundle\Service\TransactionalEmailMailer
+
+services:
+    hub.mailer.mailer:
+        class: %retext_hub_mailer.mailer.class%
+        arguments:
+        - @mailer
+        - %kernel.root_dir%/Resources/email
+        - %hub_mailer.from_email%
+        - %hub_mailer.from_name%

@@ -173,9 +173,9 @@ class UserToken
      *
      * @return self
      */
-    public function setScope($scope)
+    public function setScope(IdentValue $scope)
     {
-        $this->scope = $scope;
+        $this->scope = (string)$scope;
         return $this;
     }
 

@@ -18,7 +18,7 @@ interface UserServiceInterface
     function getOrCreateUserByEmail(EmailValue $email);
 
     /**
-     * Sends a login link to a user.
+     * Creates a new login link request.
      *
      * @param User $user
      *
@@ -26,5 +26,5 @@ interface UserServiceInterface
      *
      * @throws RateLimitExceededException If user has to wait before a new login link can be requested.
      */
-    function sendLoginLink(User $user);
+    function createLoginLinkRequest(User $user);
 } 

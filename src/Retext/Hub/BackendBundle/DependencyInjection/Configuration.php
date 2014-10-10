@@ -17,6 +17,17 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('clock_expr')->defaultValue('now')->end()
+                ->arrayNode('tokens')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('login')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('lifetime')->defaultValue(3600)->end()
+                        ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
         return $treeBuilder;
     }

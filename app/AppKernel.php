@@ -31,6 +31,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Retext\Hub\ApiBundle\RetextHubApiBundle(),
             new Retext\Hub\BackendBundle\RetextHubBackendBundle(),
+            new Retext\Hub\FrontendBundle\RetextHubFrontendBundle(),
+            new Retext\Hub\MailerBundle\RetextHubMailerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
