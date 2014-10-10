@@ -3,6 +3,7 @@
 namespace Retext\Hub\BackendBundle\Tests\Tests;
 
 use Dothiv\ValueObject\EmailValue;
+use Dothiv\ValueObject\IdentValue;
 use Retext\Hub\BackendBundle\Entity\User;
 use Retext\Hub\BackendBundle\Repository\UserRepository;
 use Retext\Hub\BackendBundle\Tests\Repository\Traits\RepositoryTestTrait;
@@ -36,6 +37,7 @@ class UserRepositoryTest extends \PHPUnit_Framework_TestCase
         $email = new EmailValue($e);
         $User  = new User();
         $User->setEmail($email);
+        $User->setHandle(new IdentValue('sometoken'));
         $repo = $this->getTestObject();
         $repo->persist($User);
         $repo->flush();

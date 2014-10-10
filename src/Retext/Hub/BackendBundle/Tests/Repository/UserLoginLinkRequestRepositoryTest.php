@@ -3,6 +3,7 @@
 namespace Retext\Hub\BackendBundle\Tests\Tests;
 
 use Dothiv\ValueObject\EmailValue;
+use Dothiv\ValueObject\IdentValue;
 use Retext\Hub\BackendBundle\Entity\User;
 use Retext\Hub\BackendBundle\Entity\UserLoginLinkRequest;
 use Retext\Hub\BackendBundle\Repository\UserRepository;
@@ -39,6 +40,7 @@ class UserLoginLinkRequestTest extends \PHPUnit_Framework_TestCase
         $userRepo->setValidator($this->testValidator);
         $user = new User();
         $user->setEmail(new EmailValue('john.doe@example.com'));
+        $user->setHandle(new IdentValue('sometoken'));
         $userRepo->persist($user)->flush();
 
         $loginRequest = new UserLoginLinkRequest();

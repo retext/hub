@@ -40,11 +40,12 @@ class UserTokenTest extends \PHPUnit_Framework_TestCase
         $userRepo->setValidator($this->testValidator);
         $user = new User();
         $user->setEmail(new EmailValue('john.doe@example.com'));
+        $user->setHandle(new IdentValue('sometoken'));
         $userRepo->persist($user)->flush();
 
         $token = new UserToken();
         $token->setToken(new IdentValue('sometoken'));
-        $token->setScope(UserToken::SCOPE_LOGIN);
+        $token->setScope(new IdentValue(UserToken::SCOPE_LOGIN));
         $token->setUser($user);
         $token->setLifeTime(new \DateTime());
         $token->updateBearerToken();
