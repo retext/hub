@@ -1,0 +1,12 @@
+services:
+    dothiv.oauth2.security.authentication.provider:
+        class: Dothiv\BearerTokenAuthBundle\Authentication\Provider\Oauth2BearerProvider
+        arguments:
+          - ""
+          - @hub.repo.user_token
+          - @hub.user
+
+    dothiv.oauth2.security.authentication.listener:
+        class: Dothiv\BearerTokenAuthBundle\Firewall\Oauth2BearerListener
+        arguments:
+          - @security.context
