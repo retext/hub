@@ -38,6 +38,12 @@ class Project
      */
     protected $types;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Entry", mappedBy="project", fetch="EAGER")
+     * @var Entry[]|ArrayCollection
+     */
+    protected $entries;
+
     public function __construct()
     {
         $this->types = new ArrayCollection();
@@ -66,4 +72,22 @@ class Project
     {
         return $this->types;
     }
+
+    /**
+     * @return ArrayCollection|Entry[]
+     */
+    public function getEntries()
+    {
+        return $this->entries;
+    }
+
+    /**
+     * @param ArrayCollection|Entry[] $entries
+     */
+    public function setEntries($entries)
+    {
+        $this->entries = $entries;
+    }
+
+
 }

@@ -19,8 +19,44 @@ class Entry
     use Traits\IdTrait;
     use Traits\CreateUpdateTimeTrait;
     use Traits\HandleTrait;
-    use Traits\ProjectTrait;
-    use Traits\EntryTypeTrait;
+
+    /**
+     * The project.
+     *
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="entries")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     * @Assert\Type("\Retext\Hub\BackendBundle\Entity\Project")
+     * @Assert\NotBlank()
+     * @var Project
+     */
+    protected $project;
+
+    /**
+     * The type.
+     *
+     * @ORM\ManyToOne(targetEntity="EntryType", inversedBy="entries")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     * @Assert\Type("\Retext\Hub\BackendBundle\Entity\EntryType")
+     * @Assert\NotBlank()
+     * @var EntryType
+     */
+    protected $type;
+
+    /**
+     * @return EntryType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param EntryType $type
+     */
+    public function setType(Entrytype $type)
+    {
+        $this->type = $type;
+    }
 
     /**
      * @var array
@@ -46,5 +82,21 @@ class Entry
     public function setFields(ArrayCollection $fields)
     {
         $this->fields = $fields->toArray();
+    }
+
+    /**
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param Project $project
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
     }
 }

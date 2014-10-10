@@ -18,7 +18,33 @@ class EntryField
     use Traits\IdTrait;
     use Traits\CreateUpdateTimeTrait;
     use Traits\HandleTrait;
-    use Traits\EntryTypeTrait;
+
+    /**
+     * The type.
+     *
+     * @ORM\ManyToOne(targetEntity="EntryType", inversedBy="fields")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     * @Assert\Type("\Retext\Hub\BackendBundle\Entity\EntryType")
+     * @Assert\NotBlank()
+     * @var EntryType
+     */
+    protected $type;
+
+    /**
+     * @return EntryType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param EntryType $type
+     */
+    public function setType(Entrytype $type)
+    {
+        $this->type = $type;
+    }
 
     /**
      * @return bool
