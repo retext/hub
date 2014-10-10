@@ -2,14 +2,19 @@
 
 namespace Retext\Hub\ApiBundle\Controller;
 
-use Dothiv\ValueObject\EmailValue;
 use JMS\Serializer\SerializerInterface;
+use Retext\Hub\ApiBundle\Request\LoginLinkRequest;
+use Retext\Hub\BackendBundle\Exception\RateLimitExceededException;
 use Retext\Hub\BackendBundle\Service\UserServiceInterface;
 use Retext\Hub\ApiBundle\Controller\Annotation\ApiRequest;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 class LoginController
 {
+    use Traits\CreateJsonResponseTrait;
+
     /**
      * @var UserServiceInterface
      */
@@ -30,13 +35,26 @@ class LoginController
     }
 
     /**
-     * @ApiRequest("\Retext\Hub\ApiBundle\\Request\LoginLinkRequest")
+     * @param Request $request
+     *
+     * @ApiRequest("\Retext\Hub\ApiBundle\Request\LoginLinkRequest")
+     *
+     * @throws TooManyRequestsHttpException If to many login attempts are made
+     *
+     * @return Response
      */
     public function loginAction(Request $request)
     {
-        // FIXME: Implement
-        // $user = $this->userService->getOrCreateUserByEmail(new EmailValue($request->attributes->get('model')->email));
-        // $this->userService->sendLoginLink($user);
-        // create 201 response
+        /** @var LoginLinkRequest $model */
+        $model = $request->attributes->get('model');
+        $user  = $this->userService->getOrCreateUserByEmail($model->getEmail());
+        try {
+            $this->userService->sendLoginLink($user);
+        } catch (RateLimitExceededException $e) {
+            throw new TooManyRequestsHttpException();
+        }
+        $response = $this->createResponse();
+        $response->setStatusCode(201);
+        return $response;
     }
 } 

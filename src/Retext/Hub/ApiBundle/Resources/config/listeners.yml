@@ -3,7 +3,7 @@ parameters:
 
 services:
   hub.api.listener.view_request:
-    class: %dothiv.api.listener.view_request.class%
+    class: %hub.api.listener.view_request.class%
     arguments:
       - @annotation_reader
       - @validator
