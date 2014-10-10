@@ -39,7 +39,7 @@ class UserTokenFactory implements UserTokenFactoryInterface
      */
     public function createLoginToken(User $user)
     {
-        $scope     = 'login';
+        $scope     = UserToken::SCOPE_LOGIN;
         $userToken = new UserToken();
         $userToken->setUser($user);
         $userToken->setLifeTime($this->clock->getNow()->modify(sprintf('+%d seconds', $this->config[$scope]['lifetime'])));
