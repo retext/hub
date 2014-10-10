@@ -204,6 +204,19 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Then /^the response should contain these JSON values:$/
+     */
+    public function theResponseShouldContainTheseJsonValues(TableNode $table)
+    {
+        $json       = (array)$this->getJson();
+        $parameters = $table->getRowsHash();
+        foreach ($parameters as $k => $v) {
+            \PHPUnit_Framework_Assert::assertArrayHasKey($k, $json);
+            \PHPUnit_Framework_Assert::assertEquals($v, $json[$k]);
+        }
+    }
+
+    /**
      * Add an bearer token header element in a request
      *
      * @Then /^I add Bearer token equal to "(?P<token>[^"]*)"$/
@@ -307,12 +320,36 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Given /^the header "(?P<name>[^"]*)" should match "(?P<regex>[^"]*)"$/
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function theHeaderShouldMatch($name, $regex)
+    {
+        $header = $this->theHeaderShouldExist($name);
+        $v      = join("\n", $header);
+        \PHPUnit_Framework_Assert::assertEquals(1, preg_match($regex, $v),
+            sprintf('Header "%s: %s" does not match expected regex.', $name, $v));
+    }
+
+    /**
      * @Given /^the header "(?P<header>[^"]*)" is stored in "(?P<store>[^"]*)"$/
      */
     public function theHeaderIsStoredIn($header, $store)
     {
         $val = $this->theHeaderShouldExist($header);
         $this->store($store, join("\n", $val));
+    }
+
+    /**
+     * @When /^I follow the location header$/
+     */
+    public function iFollowTheLocationHeader()
+    {
+        $location = $this->theHeaderShouldExist('location');
+        $this->getSubcontext('rest')->iSendARequestTo('GET', join("\n", $location));
     }
 
     /**

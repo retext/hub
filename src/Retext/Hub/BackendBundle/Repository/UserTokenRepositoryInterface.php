@@ -6,7 +6,7 @@ use Retext\Hub\BackendBundle\Entity\User;
 use Retext\Hub\BackendBundle\Entity\UserToken;
 use Retext\Hub\BackendBundle\Exception\InvalidArgumentException;
 
-interface UserTokenRepositoryInterface
+interface UserTokenRepositoryInterface extends \Dothiv\BearerTokenAuthBundle\UserTokenRepositoryInterface
 {
     /**
      * Returns whether the user has tokens of scope $scope which have been created after $created
@@ -24,7 +24,7 @@ interface UserTokenRepositoryInterface
      *
      * @return self
      *
-     * @throws InvalidArgumentException if $user is invalid.
+     * @throws InvalidArgumentException if $token is invalid.
      */
     function persist(UserToken $token);
 

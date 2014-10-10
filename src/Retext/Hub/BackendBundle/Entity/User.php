@@ -4,10 +4,7 @@ namespace Retext\Hub\BackendBundle\Entity;
 
 use Dothiv\ValueObject\EmailValue;
 use Doctrine\ORM\Mapping as ORM;
-use Dothiv\ValueObject\IdentValue;
 use JMS\Serializer\Annotation as Serializer;
-use Retext\Hub\BackendBundle\Entity\Traits\CreateUpdateTimeTrait;
-use Retext\Hub\BackendBundle\Entity\Traits\IdTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as AssertORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -23,19 +20,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class User
 {
-    use IdTrait;
-    use CreateUpdateTimeTrait;
-
-    /**
-     * Public id
-     *
-     * @ORM\Column(type="string", nullable=false)
-     * @Assert\Type("string")
-     * @Assert\NotBlank()
-     *
-     * @var string
-     */
-    protected $handle;
+    use Traits\IdTrait;
+    use Traits\CreateUpdateTimeTrait;
+    use Traits\HandleTrait;
 
     /**
      * @var string
@@ -47,25 +34,6 @@ class User
      * @Assert\Email()
      */
     private $email;
-
-    /**
-     * @param IdentValue $handle
-     *
-     * @return self
-     */
-    public function setHandle(IdentValue $handle)
-    {
-        $this->handle = (string)$handle;
-        return $this;
-    }
-
-    /**
-     * @return IdentValue
-     */
-    public function getHandle()
-    {
-        return new IdentValue($this->handle);
-    }
 
     /**
      * @return EmailValue

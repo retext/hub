@@ -2,6 +2,7 @@ parameters:
     hub.clock.class: Dothiv\ValueObject\ClockValue
     hub.user.class: Retext\Hub\BackendBundle\Service\UserService
     hub.usertokenfactory.class: Retext\Hub\BackendBundle\Service\UserTokenFactory
+    hub.value_validator.class: Retext\Hub\BackendBundle\Service\EntryValueValidator
 
 services:
 
@@ -25,3 +26,8 @@ services:
         arguments:
         - @clock
         - %hub_backend.tokens%
+
+    hub.value_validator:
+        class: %hub.value_validator.class%
+        arguments:
+        - @validator

@@ -3,10 +3,7 @@
 namespace Retext\Hub\BackendBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Retext\Hub\BackendBundle\Entity\Traits\CreateTimeTrait;
 use Dothiv\ValueObject\IdentValue;
-use Retext\Hub\BackendBundle\Entity\Traits\IdTrait;
-use Retext\Hub\BackendBundle\Entity\Traits\UserTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -29,9 +26,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class UserToken
 {
-    use IdTrait;
-    use CreateTimeTrait;
-    use UserTrait;
+    use Traits\IdTrait;
+    use Traits\CreateTimeTrait;
+    use Traits\UserTrait;
 
     const SCOPE_LOGIN = 'login';
 

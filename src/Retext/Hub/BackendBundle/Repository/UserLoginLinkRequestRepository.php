@@ -14,9 +14,9 @@ class UserLoginLinkRequestRepository extends DoctrineEntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function persist(UserLoginLinkRequest $UserLoginLinkRequest)
+    public function persist(UserLoginLinkRequest $request)
     {
-        $this->getEntityManager()->persist($this->validate($UserLoginLinkRequest));
+        $this->getEntityManager()->persist($this->validate($request));
         return $this;
     }
 

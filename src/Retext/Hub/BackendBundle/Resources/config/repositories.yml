@@ -5,6 +5,16 @@ parameters:
     hub.repo.user_login_link_request.class: Retext\Hub\BackendBundle\Repository\UserLoginLinkRequest
     hub.repo.user_token.entity.class: 'RetextHubBackendBundle:UserToken'
     hub.repo.user_token.class: Retext\Hub\BackendBundle\Repository\UserTokenRepository
+    hub.repo.organization.entity.class: 'RetextHubBackendBundle:Organization'
+    hub.repo.organization.class: Retext\Hub\BackendBundle\Repository\OrganizationRepository
+    hub.repo.project.entity.class: 'RetextHubBackendBundle:Project'
+    hub.repo.project.class: Retext\Hub\BackendBundle\Repository\ProjectRepository
+    hub.repo.type.entity.class: 'RetextHubBackendBundle:EntryType'
+    hub.repo.type.class: Retext\Hub\BackendBundle\Repository\EntryTypeRepository
+    hub.repo.field.entity.class: 'RetextHubBackendBundle:EntryField'
+    hub.repo.field.class: Retext\Hub\BackendBundle\Repository\EntryFieldRepository
+    hub.repo.entry.entity.class: 'RetextHubBackendBundle:Entry'
+    hub.repo.entry.class: Retext\Hub\BackendBundle\Repository\EntryRepository
 
 services:
 
@@ -29,5 +39,45 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [ %hub.repo.user_token.entity.class% ]
+        calls:
+        - [setValidator, ["@validator"]]
+
+    hub.repo.organization:
+        class: %hub.repo.organization.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [ %hub.repo.organization.entity.class% ]
+        calls:
+        - [setValidator, ["@validator"]]
+
+    hub.repo.project:
+        class: %hub.repo.project.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [ %hub.repo.project.entity.class% ]
+        calls:
+        - [setValidator, ["@validator"]]
+
+    hub.repo.type:
+        class: %hub.repo.type.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [ %hub.repo.type.entity.class% ]
+        calls:
+        - [setValidator, ["@validator"]]
+
+    hub.repo.field:
+        class: %hub.repo.field.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [ %hub.repo.field.entity.class% ]
+        calls:
+        - [setValidator, ["@validator"]]
+
+    hub.repo.entry:
+        class: %hub.repo.entry.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [ %hub.repo.entry.entity.class% ]
         calls:
         - [setValidator, ["@validator"]]

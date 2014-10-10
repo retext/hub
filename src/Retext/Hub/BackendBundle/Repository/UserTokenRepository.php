@@ -2,6 +2,7 @@
 
 namespace Retext\Hub\BackendBundle\Repository;
 
+use PhpOption\Option;
 use Retext\Hub\BackendBundle\Entity\User;
 use Retext\Hub\BackendBundle\Entity\UserToken;
 use Retext\Hub\BackendBundle\Repository\Traits\ValidatorTrait;
@@ -43,5 +44,19 @@ class UserTokenRepository extends DoctrineEntityRepository implements UserTokenR
     {
         $this->getEntityManager()->flush();
         return $this;
+    }
+
+    /**
+     * @param string $bearerToken
+     *
+     * @return Option
+     */
+    public function getTokenByBearerToken($bearerToken)
+    {
+        return Option::fromValue($this->createQueryBuilder('ut')
+            ->andWhere('ut.bearerToken = :bearerToken')->setParameter('bearerToken', $bearerToken)
+            ->leftJoin('ut.user', 'u')
+            ->getQuery()
+            ->getOneOrNullResult());
     }
 }

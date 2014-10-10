@@ -4,7 +4,6 @@ namespace Retext\Hub\BackendBundle\Service;
 
 use Dothiv\ValueObject\EmailValue;
 use Dothiv\ValueObject\ClockValue;
-use Dothiv\ValueObject\IdentValue;
 use Retext\Hub\BackendBundle\Entity\User;
 use Retext\Hub\BackendBundle\Entity\UserLoginLinkRequest;
 use Retext\Hub\BackendBundle\Entity\UserToken;
@@ -12,11 +11,11 @@ use Retext\Hub\BackendBundle\Exception\RateLimitExceededException;
 use Retext\Hub\BackendBundle\Repository\UserLoginLinkRequestRepositoryInterface;
 use Retext\Hub\BackendBundle\Repository\UserRepositoryInterface;
 use Retext\Hub\BackendBundle\Repository\UserTokenRepositoryInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class UserService implements UserServiceInterface
+class UserService implements UserServiceInterface, UserProviderInterface, \Dothiv\BearerTokenAuthBundle\UserServiceInterface
 {
-    use Traits\TokenGeneratorTrait;
-
     /**
      * @var UserRepositoryInterface
      */
@@ -61,7 +60,6 @@ class UserService implements UserServiceInterface
         }
         $user = new User();
         $user->setEmail($email);
-        $user->setHandle(new IdentValue($this->generateToken()));
         $this->userRepo->persist($user)->flush();
         return $user;
     }
@@ -95,4 +93,41 @@ class UserService implements UserServiceInterface
     {
         $this->loginTokenWait = $loginTokenWait;
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     */
+    public function loadUserByUsername($username)
+    {
+        $user = $this->getOrCreateUserByEmail(new EmailValue($username));
+        $user->setRoles($this->getRoles($user));
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function refreshUser(UserInterface $user)
+    {
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsClass($class)
+    {
+        return $class === 'Retext\Hub\BackendBundle\Entity\User';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoles(\Dothiv\BearerTokenAuthBundle\UserInterface $user)
+    {
+        $roles = array('ROLE_USER');
+        return $roles;
+    }
+
 }

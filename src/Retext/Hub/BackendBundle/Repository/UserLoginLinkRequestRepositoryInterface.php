@@ -9,13 +9,13 @@ use Retext\Hub\BackendBundle\Exception\InvalidArgumentException;
 interface UserLoginLinkRequestRepositoryInterface
 {
     /**
-     * @param UserLoginLinkRequest $user
+     * @param UserLoginLinkRequest $request
      *
      * @return self
      *
-     * @throws InvalidArgumentException if $user is invalid.
+     * @throws InvalidArgumentException if $request is invalid.
      */
-    function persist(UserLoginLinkRequest $user);
+    function persist(UserLoginLinkRequest $request);
 
     /**
      * @return self

@@ -2,11 +2,11 @@
 
 namespace Retext\Hub\ApiBundle\Controller;
 
+use Retext\Hub\ApiBundle\Controller\Annotation\ApiRequest;
 use JMS\Serializer\SerializerInterface;
 use Retext\Hub\ApiBundle\Request\LoginLinkRequest;
 use Retext\Hub\BackendBundle\Exception\RateLimitExceededException;
 use Retext\Hub\BackendBundle\Service\UserServiceInterface;
-use Retext\Hub\ApiBundle\Controller\Annotation\ApiRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;

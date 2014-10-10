@@ -1,5 +1,6 @@
 parameters:
     hub.api.controller.login.class: Retext\Hub\ApiBundle\Controller\LoginController
+    hub.api.controller.entry.class: Retext\Hub\ApiBundle\Controller\EntryController
 
 services:
     hub.api.controller.login:
@@ -7,3 +8,15 @@ services:
         arguments:
         - @hub.user
         - @serializer
+
+    hub.api.controller.entry:
+        class: %hub.api.controller.entry.class%
+        arguments:
+        - @hub.repo.project
+        - @hub.repo.type
+        - @hub.repo.field
+        - @hub.repo.entry
+        - @serializer
+        - @hub.value_validator
+        - @router
+        - 'hub_api_entry'

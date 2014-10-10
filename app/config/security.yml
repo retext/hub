@@ -1,12 +1,24 @@
 security:
+    encoders:
+        Retext\Hub\BackendBundle\Entity\User: plaintext
+
     providers:
-        in_memory:
-            memory: ~
+        user:
+            id: hub.user
+
+    role_hierarchy:
+        ROLE_USER: ~
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        default:
-            anonymous: ~
+        user:
+            pattern:    ^/api/(^auth/login)
+            stateless:  true
+            provider:   user
+            oauth2:     true
+
+    access_control:
+      - { path: ^/api/(^auth/login), roles: ROLE_USER }

@@ -1,6 +1,20 @@
 hub_api_login:
     path:     /auth/login
+    methods: [POST]
     defaults:
         _controller: hub.api.controller.login:loginAction
         _format: json
+
+hub_api_entry:
+    path:     /{organization}/{project}/{entry}
+    methods: [GET]
+    defaults:
+        _controller: hub.api.controller.entry:fetchAction
+        _format: json
+
+hub_api_entry_create:
+    path:     /{organization}/{project}
     methods: [POST]
+    defaults:
+        _controller: hub.api.controller.entry:createAction
+        _format: json

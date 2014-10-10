@@ -17,7 +17,7 @@ class UserTokenTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @group Entity
-     * @group BusinessBundle
+     * @group BackendBundle
      * @group User
      */
     public function itShouldBeInstantiateable()
@@ -28,7 +28,7 @@ class UserTokenTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @group   Entity
-     * @group   BusinessBundle
+     * @group   BackendBundle
      * @group   User
      * @group   Integration
      * @depends itShouldBeInstantiateable

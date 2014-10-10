@@ -3,14 +3,15 @@
 namespace Retext\Hub\BackendBundle\Repository;
 
 use Dothiv\ValueObject\EmailValue;
+use Dothiv\ValueObject\IdentValue;
 use Retext\Hub\BackendBundle\Entity\User;
-use Retext\Hub\BackendBundle\Repository\Traits\ValidatorTrait;
 use PhpOption\Option;
 use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
 
 class UserRepository extends DoctrineEntityRepository implements UserRepositoryInterface
 {
-    use ValidatorTrait;
+    use Traits\ValidatorTrait;
+    use Traits\TokenGeneratorTrait;
 
     /**
      * @param EmailValue $email
@@ -32,6 +33,9 @@ class UserRepository extends DoctrineEntityRepository implements UserRepositoryI
      */
     public function persist(User $user)
     {
+        if (Option::fromValue($user->getId())->isEmpty()) {
+            $user->setHandle(new IdentValue($this->generateToken()));
+        }
         $this->getEntityManager()->persist($this->validate($user));
         return $this;
     }

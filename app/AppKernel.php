@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new Retext\Hub\BackendBundle\RetextHubBackendBundle(),
             new Retext\Hub\FrontendBundle\RetextHubFrontendBundle(),
             new Retext\Hub\MailerBundle\RetextHubMailerBundle(),
+            new Dothiv\BearerTokenAuthBundle\DothivBearerTokenAuthBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
