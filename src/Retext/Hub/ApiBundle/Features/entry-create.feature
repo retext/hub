@@ -55,7 +55,8 @@ Feature: Create Entry
     And the response should contain these JSON values:
       | @context                    | http://hub.retext.it/jsonld/PaginatedList |
       | count                       | 1                                         |
-      #| items[0].@context           | http://hub.retext.it/jsonld/Entry         |
       | items[0].fields.title       | My example Session                        |
       | items[0].fields.description | Description of my session                 |
       | items[0].fields.host        | John Doe                                  |
+    # | items[0].@context           | http://hub.retext.it/jsonld/Entry         |
+    # FIXME: Implement in https://github.com/sanpii/behatch-contexts/
