@@ -24,11 +24,10 @@ interface EntryRepositoryInterface
     function flush();
 
     /**
-     * @param IdentValue $orgHandle
      * @param IdentValue $projectHandle
      * @param IdentValue $entryHandle
      *
      * @return Option of Entry
      */
-    function findByHandle(IdentValue $orgHandle, IdentValue $projectHandle, IdentValue $entryHandle);
+    function findByHandle(IdentValue $projectHandle, IdentValue $entryHandle);
 }

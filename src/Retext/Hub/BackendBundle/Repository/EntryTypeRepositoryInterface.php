@@ -22,11 +22,4 @@ interface EntryTypeRepositoryInterface
      * @return self
      */
     function flush();
-
-    /**
-     * @param Project $project
-     *
-     * @return ArrayCollection|EntryType[]
-     */
-    function findByProject(Project $project);
 }

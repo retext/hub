@@ -30,21 +30,4 @@ class EntryFieldRepository extends DoctrineEntityRepository implements EntryFiel
         $this->getEntityManager()->flush();
         return $this;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByType(EntryType $type)
-    {
-        $result = $this->createQueryBuilder('f')
-            ->andWhere('f.type = :type')->setParameter('type', $type)
-            ->getQuery()
-            ->getResult();
-        $fields = new ArrayCollection();
-        foreach ($result as $f) {
-            /** @var EntryField $f */
-            $fields->set((string)$f->getHandle(), $f);
-        }
-        return $fields;
-    }
 }

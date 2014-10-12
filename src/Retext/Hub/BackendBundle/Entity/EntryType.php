@@ -53,7 +53,12 @@ class EntryType
      */
     public function getFields()
     {
-        return $this->fields;
+        $fields = new ArrayCollection();
+        foreach ($this->fields as $f) {
+            /** @var EntryField $f */
+            $fields->set((string)$f->getHandle(), $f);
+        }
+        return $fields;
     }
 
     /**
@@ -88,6 +93,5 @@ class EntryType
     {
         $this->project = $project;
     }
-
 
 }

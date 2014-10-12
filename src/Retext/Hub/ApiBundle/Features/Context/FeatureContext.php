@@ -29,6 +29,8 @@ class FeatureContext extends BehatContext
 
     private $parameters;
 
+    private $entities;
+
     /**
      * @var ArrayCollection
      */
@@ -45,7 +47,8 @@ class FeatureContext extends BehatContext
         $this->useContext('behatch', new BehatchContext($parameters));
         $this->useContext('mink', new MinkContext($parameters));
         $this->useContext('doctrine_fixtures_context', new DoctrineFixturesContext());
-        $this->storage = new ArrayCollection();
+        $this->storage  = new ArrayCollection();
+        $this->entities = new ArrayCollection();
     }
 
     /**
@@ -109,6 +112,10 @@ class FeatureContext extends BehatContext
         $em->persist($entity);
         $em->flush();
         $this->store($storageName, $entity);
+        $this->entities->add($entity);
+        $this->entities->map(function ($entity) use ($em) {
+            $em->refresh($entity);
+        });
     }
 
     /**
@@ -126,6 +133,9 @@ class FeatureContext extends BehatContext
         $em = $this->getEntityManager();
         $em->persist($entity);
         $em->flush();
+        $this->entities->map(function ($entity) use ($em) {
+            $em->refresh($entity);
+        });
     }
 
     /**

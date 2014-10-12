@@ -56,7 +56,7 @@ class EntryRepository extends DoctrineEntityRepository implements EntryRepositor
     /**
      * {@inheritdoc}
      */
-    public function findByHandle(IdentValue $orgHandle, IdentValue $projectHandle, IdentValue $entryHandle)
+    public function findByHandle(IdentValue $projectHandle, IdentValue $entryHandle)
     {
         return Option::fromValue($this->createQueryBuilder('e')
             ->andWhere('e.handle = :handle')->setParameter('handle', (string)$entryHandle)

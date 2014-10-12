@@ -46,7 +46,8 @@ class Project
 
     public function __construct()
     {
-        $this->types = new ArrayCollection();
+        $this->types   = new ArrayCollection();
+        $this->entries = new ArrayCollection();
     }
 
     /**
@@ -70,7 +71,12 @@ class Project
      */
     public function getTypes()
     {
-        return $this->types;
+        $types = new ArrayCollection();
+        foreach ($this->types as $t) {
+            /** @var EntryType $t */
+            $types->set((string)$t->getHandle(), $t);
+        }
+        return $types;
     }
 
     /**
@@ -80,14 +86,4 @@ class Project
     {
         return $this->entries;
     }
-
-    /**
-     * @param ArrayCollection|Entry[] $entries
-     */
-    public function setEntries($entries)
-    {
-        $this->entries = $entries;
-    }
-
-
 }

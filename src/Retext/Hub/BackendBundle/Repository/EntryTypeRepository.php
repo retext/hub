@@ -30,21 +30,4 @@ class EntryTypeRepository extends DoctrineEntityRepository implements EntryTypeR
         $this->getEntityManager()->flush();
         return $this;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByProject(Project $project)
-    {
-        $result = $this->createQueryBuilder('t')
-            ->andWhere('t.project = :project')->setParameter('project', $project)
-            ->getQuery()
-            ->getResult();
-        $types  = new ArrayCollection();
-        foreach ($result as $t) {
-            /** @var EntryType $t */
-            $types->set((string)$t->getHandle(), $t);
-        }
-        return $types;
-    }
 }

@@ -22,11 +22,4 @@ interface EntryFieldRepositoryInterface
      * @return self
      */
     function flush();
-
-    /**
-     * @param EntryType $type
-     *
-     * @return ArrayCollection|EntryField[]
-     */
-    function findByType(EntryType $type);
 }

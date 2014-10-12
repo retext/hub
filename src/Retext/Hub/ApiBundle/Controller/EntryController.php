@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use JMS\Serializer\SerializerInterface;
 use Retext\Hub\ApiBundle\Request\EntryCreateRequest;
 use Retext\Hub\BackendBundle\Entity\Entry;
+use Retext\Hub\BackendBundle\Entity\EntryType;
 use Retext\Hub\BackendBundle\Entity\Organization;
 use Retext\Hub\BackendBundle\Entity\Project;
 use Retext\Hub\BackendBundle\Repository\EntryFieldRepository;
@@ -113,7 +114,7 @@ class EntryController
                 )
             );
         });
-        $types   = $this->typeRepo->findByProject($project);
+        $types   = $project->getTypes();
         if (!$types->containsKey((string)$model->getType())) {
             throw new NotFoundHttpException(
                 sprintf(
@@ -124,8 +125,9 @@ class EntryController
                 )
             );
         }
+        /** @var EntryType $type */
         $type   = $types->get((string)$model->getType());
-        $fields = $this->fieldRepo->findByType($type);
+        $fields = $type->getFields();
         $json   = json_decode($request->getContent());
         $data   = new ArrayCollection();
         foreach ($fields as $field) {
@@ -174,7 +176,6 @@ class EntryController
     public function fetchAction($organization, $project, $entry)
     {
         $optionalEntry = $this->entryRepo->findByHandle(
-            new IdentValue($organization),
             new IdentValue($project),
             new IdentValue($entry)
         );
