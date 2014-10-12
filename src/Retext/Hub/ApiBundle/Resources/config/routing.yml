@@ -6,15 +6,22 @@ hub_api_login:
         _format: json
 
 hub_api_entry:
-    path:     /{organization}/{project}/{entry}
+    path:     /{organization}/{project}/entry/{entry}
     methods: [GET]
     defaults:
         _controller: hub.api.controller.entry:fetchAction
         _format: json
 
 hub_api_entry_create:
-    path:     /{organization}/{project}
+    path:     /{organization}/{project}/entry
     methods: [POST]
     defaults:
         _controller: hub.api.controller.entry:createAction
+        _format: json
+
+hub_api_entries_get:
+    path:     /{organization}/{project}/entry
+    methods: [GET]
+    defaults:
+        _controller: hub.api.controller.entry:listAction
         _format: json

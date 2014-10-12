@@ -10,10 +10,11 @@ use Retext\Hub\BackendBundle\Entity\Project;
 use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EntryRepository extends DoctrineEntityRepository implements EntryRepositoryInterface
+class EntryRepository extends DoctrineEntityRepository implements EntryRepositoryInterface, PaginatedRepositoryInterface
 {
     use Traits\ValidatorTrait;
     use Traits\TokenGeneratorTrait;
+    use Traits\PaginatedResultBuilderTrait;
 
     /**
      * {@inheritdoc}
@@ -65,4 +66,19 @@ class EntryRepository extends DoctrineEntityRepository implements EntryRepositor
             ->getQuery()
             ->getOneOrNullResult());
     }
+
+    /**
+     * Returns a list of items
+     *
+     * @param mixed|null $offsetKey
+     * @param mixed|null $offsetDir
+     *
+     * @return PaginatedResult
+     */
+    public function getPaginated($offsetKey = null, $offsetDir = null)
+    {
+        return $this->buildPaginatedResult($this->createQueryBuilder('i'), $offsetKey, $offsetDir);
+    }
+
+
 }

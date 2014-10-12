@@ -16,6 +16,8 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Sanpi\Behatch\Context\BehatchContext;
+use Sanpi\Behatch\Json\Json;
+use Sanpi\Behatch\Json\JsonInspector;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -218,11 +220,13 @@ class FeatureContext extends BehatContext
      */
     public function theResponseShouldContainTheseJsonValues(TableNode $table)
     {
-        $json       = (array)$this->getJson();
+        $inspector  = new JsonInspector('json');
+        $content    = $this->getSubcontext('mink')->getSession()->getPage()->getContent();
+        $json       = new Json($content);
         $parameters = $table->getRowsHash();
         foreach ($parameters as $k => $v) {
-            \PHPUnit_Framework_Assert::assertArrayHasKey($k, $json);
-            \PHPUnit_Framework_Assert::assertEquals($v, $json[$k]);
+            $actual = $inspector->evaluate($json, $k);
+            \PHPUnit_Framework_Assert::assertEquals($v, $actual);
         }
     }
 

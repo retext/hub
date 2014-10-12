@@ -9,6 +9,10 @@ use Retext\Hub\ApiBundle\Controller\Annotation\ApiRequest;
 use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\EntityManager;
 use JMS\Serializer\SerializerInterface;
+use Retext\Hub\ApiBundle\Model\PaginatedList;
+use Retext\Hub\ApiBundle\Model\PaginatedListModel;
+use Retext\Hub\ApiBundle\Model\Transformer\EntryTransformer;
+use Retext\Hub\ApiBundle\Model\Transformer\PaginatedListTransformer;
 use Retext\Hub\ApiBundle\Request\EntryCreateRequest;
 use Retext\Hub\BackendBundle\Entity\Entry;
 use Retext\Hub\BackendBundle\Entity\EntryType;
@@ -18,6 +22,7 @@ use Retext\Hub\BackendBundle\Repository\EntryFieldRepository;
 use Retext\Hub\BackendBundle\Repository\EntryFieldRepositoryInterface;
 use Retext\Hub\BackendBundle\Repository\EntryRepositoryInterface;
 use Retext\Hub\BackendBundle\Repository\EntryTypeRepositoryInterface;
+use Retext\Hub\BackendBundle\Repository\PaginatedRepositoryInterface;
 use Retext\Hub\BackendBundle\Repository\ProjectRepositoryInterface;
 use Retext\Hub\BackendBundle\Service\EntryValueValidatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -156,24 +161,22 @@ class EntryController
         $entry->setFields($data);
         $this->entryRepo->persist($entry)->flush();
 
-        $link = $this->generateLink($entry);
-
+        $model    = $this->transformEntry($entry);
         $response = $this->createResponse();
         $response->setStatusCode(201);
-        $response->headers->add(array('Location' => $link));
+        $response->headers->add(array('Location' => (string)$model->getJsonLdId()));
         return $response;
     }
 
     /**
      * Returns an entry.
      *
-     * @param string $organization
      * @param string $project
      * @param string $entry
      *
      * @return Response
      */
-    public function fetchAction($organization, $project, $entry)
+    public function fetchAction($project, $entry)
     {
         $optionalEntry = $this->entryRepo->findByHandle(
             new IdentValue($project),
@@ -187,31 +190,64 @@ class EntryController
         $response = $this->createResponse();
         // Unwrap fields
         /* @var Entry $entry */
-        $entry            = $optionalEntry->get();
-        $data             = $entry->getFields();
-        $data['@id']      = $this->generateLink($entry);
-        $data['@context'] = 'http://hub.retext.it/jsonld/Entry';
-        $response->setContent($this->serializer->serialize($data, 'json'));
+        $entry = $optionalEntry->get();
+        $model = $this->transformEntry($entry);
+        $response->setContent($this->serializer->serialize($model, 'json'));
         return $response;
 
     }
 
     /**
-     * @param Entry $entry
+     * @param Request $request
      *
-     * @return string
+     * @return Response
      */
-    protected function generateLink(Entry $entry)
+    public function listAction(Request $request)
     {
-        $link = $this->router->generate(
-            $this->entryRoute,
-            array(
-                'organization' => (string)$entry->getProject()->getOrganization()->getHandle(),
-                'project'      => (string)$entry->getProject()->getHandle(),
-                'entry'        => (string)$entry->getHandle()
-            ),
-            RouterInterface::ABSOLUTE_URL
+        $paginatedList = $this->createListing(
+            $this->entryRepo,
+            $request->query->get('offsetKey'),
+            $request->query->get('offsetDir'),
+            $request->attributes->get('_route')
         );
-        return $link;
+
+        $response = $this->createResponse();
+        $response->setContent($this->serializer->serialize($paginatedList, 'json'));
+        return $response;
+    }
+
+    /**
+     * @param PaginatedRepositoryInterface $repo
+     * @param string                       $offsetKey
+     * @param string                       $offsetDir
+     *
+     * @return PaginatedListModel
+     */
+    protected function createListing(
+        PaginatedRepositoryInterface $repo,
+        $offsetKey,
+        $offsetDir
+    )
+    {
+        $listTransformer  = new PaginatedListTransformer($this->router, $this->entryRoute);
+        $entryTransformer = new EntryTransformer($this->router, $this->entryRoute);
+        $paginatedResult  = $repo->getPaginated($offsetKey, $offsetDir);
+        $paginatedList    = $listTransformer->transform($paginatedResult);
+        foreach ($paginatedResult->getResult() as $entry) {
+            $paginatedList->addItem($entryTransformer->transform($entry, null, true));
+        }
+        return $paginatedList;
+    }
+
+    /**
+     * @param $entry
+     *
+     * @return \Retext\Hub\ApiBundle\Model\EntryModel
+     */
+    protected function transformEntry($entry)
+    {
+        $entryTransformer = new EntryTransformer($this->router, $this->entryRoute);
+        $model            = $entryTransformer->transform($entry);
+        return $model;
     }
 } 

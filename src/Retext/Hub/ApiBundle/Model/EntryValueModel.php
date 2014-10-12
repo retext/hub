@@ -2,10 +2,12 @@
 
 namespace Retext\Hub\ApiBundle\Model;
 
+use Dothiv\ValueObject\URLValue;
 use Retext\Hub\BackendBundle\Entity\EntryField;
 
-class EntryValue
+class EntryValueModel implements JsonLdEntityInterface
 {
+    use Traits\JsonLdEntityTrait;
 
     /**
      * @var EntryField
@@ -21,10 +23,6 @@ class EntryValue
     {
         $this->field = $field;
         $this->value = $value;
+        $this->setJsonLdContext(new URLValue('http://hub.retext.it/jsonld/EntryValue'));
     }
-
-    public function isValid()
-    {
-
-    }
-} 
+}
